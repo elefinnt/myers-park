@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-  Image,
   TextInput,
 } from "react-native";
 import React, { useRef } from "react";
@@ -31,10 +30,11 @@ const SearchBar = () => (
           placeholderTextColor={Colors.medium}
         />
       </View>
-      <Link href={"/"} asChild />
-      <TouchableOpacity style={styles.optionButton}>
-        <Ionicons name="options-outline" size={20} />
-      </TouchableOpacity>
+      <Link href={"/(modal)/filter"} asChild>
+        <TouchableOpacity style={styles.optionButton}>
+          <Ionicons name="options-outline" size={20} />
+        </TouchableOpacity>
+      </Link>
     </View>
   </View>
 );
