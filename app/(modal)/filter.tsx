@@ -66,6 +66,12 @@ const Filter = () => {
         innerIconStyle={{ borderColor: Colors.cubBlack, borderRadius: 4 }}
         onPress={() => {
           const isChecked = items[index].checked;
+          const updatedItems = items.map((item)  => {
+            if (item.name === items[index].name) {
+              item.checked = !isChecked;
+            }
+            return item;
+          }
         }}
       />
     </View>
