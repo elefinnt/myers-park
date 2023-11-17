@@ -5,40 +5,80 @@ import {
   TouchableOpacity,
   FlatList,
   ListRenderItem,
+  TextInput,
 } from "react-native";
 import React, { useState } from "react";
 import Colors from "@/constants/Colors";
 import { useNavigation } from "expo-router";
 import categories from "@/assets/data/filter.json";
-import useFetch from "@/hook/useFetch";
+import { Ionicons } from "@expo/vector-icons";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 interface Category {
   name: string;
-  type: string;
-  muscle: string;
-  equipment: string;
-  difficulty: string;
-  instructions: string;
+  count: number;
+  checked?: boolean;
 }
+
+const ItemBox = () => (
+  <>
+    <View style={styles.itemContainer}>
+      <TouchableOpacity style={styles.item}>
+        <Ionicons name="arrow-down-outline" size={20} color={Colors.medium} />
+        <Text style={{ flex: 1 }}>Sort</Text>
+        <Ionicons name="chevron-forward-circle" size={22} />
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.item}>
+        <Ionicons name="barbell-outline" size={20} color={Colors.medium} />
+        <Text style={{ flex: 1 }}>Difficulty</Text>
+        <Ionicons name="chevron-forward-circle" size={22} />
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.item}>
+        <Ionicons name="reorder-four-outline" size={20} color={Colors.medium} />
+        <Text style={{ flex: 1 }}>Type</Text>
+        <Ionicons name="chevron-forward-circle" size={22} />
+      </TouchableOpacity>
+    </View>
+    <Text style={styles.header}>Category</Text>
+  </>
+);
 
 const Filter = () => {
   const navigation = useNavigation();
-
-  // const [filterName, setFilterName] = useState("");
-  // const [filterMuscle, setFilterMuscle] = useState("");
-  // const [filterDifficulty, setFilterDifficulty] = useState("");
-  // const [filterType, setFilterType] = useState("");
-
-  const renderItem: ListRenderItem<Category> = ({ item }) => (
-    <View>
-      <Text>{item.name}</Text>
+  const [items, setItems] = useState<Category[]>(categories);
+  const renderItem: ListRenderItem<Category> = ({ item, index }) => (
+    <View style={styles.row}>
+      <Text style={styles.itemText}>
+        {item.name} ({item.count})
+      </Text>
+      <BouncyCheckbox
+        isChecked={items[index].checked}
+        disableBuiltInState
+        fillColor={Colors.cubBlack}
+        unfillColor="#FFF"
+        iconStyle={{
+          borderColor: Colors.cubBlack,
+          borderRadius: 4,
+          borderWidth: 1,
+        }}
+        innerIconStyle={{ borderColor: Colors.cubBlack, borderRadius: 4 }}
+        onPress={() => {
+          const isChecked = items[index].checked;
+        }}
+      />
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <FlatList data={categories} renderItem={renderItem} />
-
+      <FlatList
+        data={categories}
+        renderItem={renderItem}
+        ListHeaderComponent={<ItemBox />}
+      />
+      <View style={{ height: 76 }} />
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.fullButton}
@@ -80,6 +120,35 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontWeight: "bold",
     fontSize: 16,
+  },
+  itemContainer: {
+    backgroundColor: "#FFF",
+    padding: 8,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  header: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 16,
+  },
+  item: {
+    flexDirection: "row",
+    gap: 20,
+    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingVertical: 10,
+    borderColor: Colors.grey,
+    borderBottomWidth: 1,
+  },
+  itemText: {
+    flex: 1,
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#FFF",
   },
 });
 
