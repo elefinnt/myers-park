@@ -6,13 +6,19 @@ import {
   FlatList,
   ListRenderItem,
   TextInput,
+  Button,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Colors from "@/constants/Colors";
 import { useNavigation } from "expo-router";
 import categories from "@/assets/data/filter.json";
 import { Ionicons } from "@expo/vector-icons";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
 interface Category {
   name: string;
@@ -48,6 +54,44 @@ const ItemBox = () => (
 const Filter = () => {
   const navigation = useNavigation();
   const [items, setItems] = useState<Category[]>(categories);
+  const [selected, setSelected] = useState<Category[]>([]);
+  const flexWidth = useSharedValue(0);
+  const scale = useSharedValue(0);
+
+  useEffect(() => {
+    const hasSelected = selected.length > 0;
+    const selectedItems = items.filter((item) => item.checked);
+    const newSelected = selectedItems.length > 0;
+
+    if (hasSelected !== newSelected) {
+      flexWidth.value = withTiming(newSelected ? 150 : 0);
+      scale.value = withTiming(newSelected ? 1 : 0);
+    }
+
+    setSelected(selectedItems);
+  }, [items]);
+
+  const handleClearAll = () => {
+    const updatedItems = items.map((item) => {
+      item.checked = false;
+      return item;
+    });
+    setItems(updatedItems);
+  };
+
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      width: flexWidth.value,
+      opacity: flexWidth.value > 0 ? 1 : 0,
+    };
+  });
+
+  const animatedText = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scale.value }],
+    };
+  });
+
   const renderItem: ListRenderItem<Category> = ({ item, index }) => (
     <View style={styles.row}>
       <Text style={styles.itemText}>
@@ -66,12 +110,15 @@ const Filter = () => {
         innerIconStyle={{ borderColor: Colors.cubBlack, borderRadius: 4 }}
         onPress={() => {
           const isChecked = items[index].checked;
-          const updatedItems = items.map((item)  => {
+
+          const updatedItems = items.map((item) => {
             if (item.name === items[index].name) {
               item.checked = !isChecked;
             }
+
             return item;
-          }
+          });
+          setItems(updatedItems);
         }}
       />
     </View>
@@ -86,12 +133,21 @@ const Filter = () => {
       />
       <View style={{ height: 76 }} />
       <View style={styles.footer}>
-        <TouchableOpacity
-          style={styles.fullButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.footerText}>Done</Text>
-        </TouchableOpacity>
+        <View style={styles.btnContainer}>
+          <Animated.View style={[animatedStyles, styles.outlineButton]}>
+            <TouchableOpacity onPress={handleClearAll}>
+              <Animated.Text style={[animatedText, styles.outlineButtonText]}>
+                Clear All
+              </Animated.Text>
+            </TouchableOpacity>
+          </Animated.View>
+          <TouchableOpacity
+            style={styles.fullButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Text style={styles.footerText}>Done</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -121,6 +177,8 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: "center",
     borderRadius: 8,
+    flex: 1,
+    height: 56,
   },
   footerText: {
     color: "#FFF",
@@ -155,6 +213,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     backgroundColor: "#FFF",
+  },
+  btnContainer: {
+    flexDirection: "row",
+    gap: 12,
+    justifyContent: "center",
+  },
+  outlineButton: {
+    borderColor: Colors.cubBlack,
+    borderWidth: 0.5,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 56,
+  },
+  outlineButtonText: {
+    color: Colors.cubBlack,
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 
