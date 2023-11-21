@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import Colors from "@/constants/Colors";
 import { workout } from "@/assets/data/workout";
@@ -8,23 +8,54 @@ import { Ionicons } from "@expo/vector-icons";
 
 const Details = () => {
   const navigation = useNavigation();
+  //   const [isLiked, setIsLiked] = useState(false);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTransparent: true,
-      headerTitle: "",
-      headerTintColor: Colors.cubBlack,
-      headerLeft: () => (
-        <TouchableOpacity
-          style={styles.roundButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="arrow-back" size={24} color={Colors.cubBlack} />
-        </TouchableOpacity>
-      ),
-    });
-    console.log("details");
-  }, []);
+  //   const handleLike = () => {
+  //     setIsLiked(!isLiked);
+  //   };
+
+  useLayoutEffect(
+    () => {
+      navigation.setOptions({
+        headerTransparent: true,
+        headerTitle: "",
+        headerTintColor: Colors.cubBlack,
+        headerLeft: () => (
+          <TouchableOpacity
+            style={styles.roundButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="arrow-back" size={24} color={Colors.cubBlack} />
+          </TouchableOpacity>
+        ),
+        headerRight: () => (
+          <View style={styles.bar}>
+            <TouchableOpacity style={styles.roundButton}>
+              <Ionicons
+                name="share-outline"
+                size={24}
+                color={Colors.cubBlack}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.roundButton}
+              //    onPress={handleLike}
+            >
+              <Ionicons
+                name="heart-outline"
+                //   {isLiked ? `heart` : `heart-outline`}
+                size={24}
+                color={Colors.cubBlack}
+              />
+            </TouchableOpacity>
+          </View>
+        ),
+      });
+    },
+    [
+      // isLiked
+    ]
+  );
 
   return (
     <>
@@ -60,6 +91,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
+  },
+  bar: {
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
