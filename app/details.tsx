@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SectionList,
   ListRenderItem,
+  ImageSourcePropType,
 } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
@@ -87,7 +88,10 @@ const Details = () => {
         parallaxHeaderHeight={250}
         stickyHeaderHeight={100}
         renderBackground={() => (
-          <Image source={workout.img} style={{ height: 300, width: "100%" }} />
+          <Image
+            source={workout.img as ImageSourcePropType}
+            style={{ height: 300, width: "100%" }}
+          />
         )}
         contentBackgroundColor={Colors.lightGrey}
         renderStickyHeader={() => (
