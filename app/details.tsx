@@ -69,7 +69,7 @@ const Details = () => {
   );
 
   const renderItem: ListRenderItem<any> = ({ item, index }) => (
-    <Link href={"/"} asChild>
+    <Link href={{ pathname: "/(modal)/dish", params: { id: item.id } }} asChild>
       <TouchableOpacity style={styles.item}>
         <View style={{ flex: 1 }}>
           <Text style={styles.exercise}>{item.name}</Text>
@@ -119,7 +119,7 @@ const Details = () => {
             ItemSeparatorComponent={() => (
               <View
                 style={{
-                  marginHorizontal: 20,
+                  marginHorizontal: 16,
                   height: 1,
                   backgroundColor: Colors.grey,
                 }}
@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
   exerciseText: {
     fontSize: 14,
     color: Colors.mediumDark,
+    paddingVertical: 4,
   },
 });
 
