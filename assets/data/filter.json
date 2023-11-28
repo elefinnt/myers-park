@@ -1,0 +1,66 @@
+[
+  {
+    "name": "abdominals",
+    "count": 11
+  },
+  {
+    "name": "abductors",
+    "count": 9
+  },
+  {
+    "name": "adductors",
+    "count": 8
+  },
+  {
+    "name": "biceps",
+    "count": 14
+  },
+  {
+    "name": "calves",
+    "count": 6
+  },
+  {
+    "name": "chest",
+    "count": 13
+  },
+  {
+    "name": "forearms",
+    "count": 5
+  },
+  {
+    "name": "glutes",
+    "count": 7
+  },
+  {
+    "name": "hamstrings",
+    "count": 12
+  },
+  {
+    "name": "lats",
+    "count": 10
+  },
+  {
+    "name": "lower_back",
+    "count": 15
+  },
+  {
+    "name": "middle_back",
+    "count": 8
+  },
+  {
+    "name": "neck",
+    "count": 6
+  },
+  {
+    "name": "quadriceps",
+    "count": 9
+  },
+  {
+    "name": "traps",
+    "count": 13
+  },
+  {
+    "name": "triceps",
+    "count": 11
+  }
+]
